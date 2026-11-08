@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Set up home Wi-Fi and manual wardriving log uploads on Cerberus Unchained rev144.">
+  <title>Wardriving upload setup · Cerberus Unchained</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#080f11;color:#dfe8e7;line-height:1.65}
+    body{max-width:780px;margin:auto;padding:32px 22px 64px}a{color:#92f9b0;text-underline-offset:4px}h1,h2{line-height:1.2}h1{font-size:clamp(2rem,6vw,3.2rem)}h2{margin-top:2.3rem}p,li{color:#b8c9c6}li{margin-bottom:12px}code{font-size:.9em;color:#99e8e9;overflow-wrap:anywhere}.eyebrow{font-family:monospace;color:#92f9b0;letter-spacing:.1em}section{border-top:1px solid #243432;margin-top:32px;padding-top:10px}.note{padding:16px 20px;border-left:2px solid #92f9b0;background:#101c1c}dt{font-weight:700;color:#e4eeee;margin-top:16px}dd{margin:4px 0 0;color:#b8c9c6}footer{margin-top:48px;font-size:.85rem;color:#8da4a0}strong{color:#e4eeee}
+  </style>
+</head>
+<body>
+  <a href="../#sd-assets">← Back to the flasher and SD downloads</a>
+  <p class="eyebrow">CERBERUS UNCHAINED / REV144</p>
+  <h1>Upload when you choose.</h1>
+  <p>Stop recording, then open <strong>Scan → Wardriving → LOGS / UPLOAD</strong>. Uploads use your home Wi-Fi and need your action and service credentials. Saving or importing settings does not connect or upload.</p>
+  <p class="note">Experimental release: WiGLE has acknowledged an upload, but account processing and credit need separate confirmation. The last WDGWars attempt failed during its TLS handshake. Live Wardrift uploads remain unverified.</p>
+
+  <section aria-labelledby="profile"><h2 id="profile">Import your settings from SD</h2>
+    <ol>
+      <li><a href="../downloads/wardrive-upload.example.rev144.json" download>Download the empty upload profile</a>. Fill a private copy on your computer. Keep all sections and field names exactly as supplied.</li>
+      <li>Enter your home Wi-Fi <code>ssid</code> and <code>password</code>. The access point must offer <strong>2.4 GHz</strong>. A blank password means an open network. Enterprise authentication and captive-portal sign-in are not supported.</li>
+      <li>For each service you want to use, enter its credentials and change <code>enabled</code> to <code>true</code>. Leave unused services empty and disabled. WiGLE needs both <code>api_name</code> and <code>api_token</code>; WDGWars needs a 64-character hexadecimal token; Wardrift needs its device/API token.</li>
+      <li>Save as UTF-8 without a byte-order mark, named <strong>UPLOAD.JSON</strong>, and copy to <code>CERBERUS/CONFIG/UPLOAD.JSON</code> on the SD card. Create <code>CONFIG</code> if needed. Safely eject the card or USB drive and return SD ownership to Cerberus.</li>
+      <li>Open <strong>LOGS / UPLOAD → HOME WI-FI / API SETUP → IMPORT JSON FROM SD</strong>. Review the notice, then choose <strong>CONFIRM IMPORT</strong>. This replaces the whole saved profile, including empty and disabled fields.</li>
+      <li>Wait for <strong>PROFILE SAVED / SD COPY REMOVED</strong>, then reopen setup and check its SET/EMPTY labels and enabled destinations. If the SD copy remains, check setup and remove that file yourself. File removal is not a secure erase.</li>
+    </ol>
+    <p>Keep your completed profile private. Never share it in a report or issue. The device verifies saved settings before removing the SD copy. An invalid profile leaves saved settings unchanged.</p>
+    <p>All fields are required, with no comments, duplicate or unknown keys. The maximum file size is 4,096 bytes. Limits in UTF-8 bytes: SSID 32, password 64, WiGLE API name 64, WiGLE token 128, Wardrift token 128; a supplied WDGWars token must be exactly 64 hexadecimal characters.</p>
+  </section>
+
+  <section aria-labelledby="device"><h2 id="device">Or enter settings on Cerberus</h2>
+    <p>Open <strong>LOGS / UPLOAD → HOME WI-FI / API SETUP</strong>. Enter the home network and keys, turn on the desired destinations, then choose <strong>SAVE SETUP</strong>. The keyboard enters ASCII; the JSON profile supports UTF-8 network names.</p>
+    <p>Get WiGLE's API name and token from its <a href="https://wigle.net/account?account=api">API account page</a>, rather than using your normal account password. Get WDGWars's API key from your provider profile; see its <a href="https://wdgwars.pl/press">developer guide</a>. Wardrift integration is provisional and still needs live account verification.</p>
+    <p>Passwords and keys are masked with an explicit reveal control. This firmware does not enable encrypted credential storage; someone with physical access can expose saved credentials. <strong>FORGET HOME AP AND ALL KEYS</strong> removes the upload profile after confirmation and keeps captures and receipts.</p>
+  </section>
+
+  <section aria-labelledby="record"><h2 id="record">Record and select a log</h2>
+    <p>Before START, wait for <strong>GPS DATA &gt; FIX + UTC / WIGLE CSV</strong>. During recording, check that <strong>SD: … ROWS</strong> increases. Stop and wait for <strong>CSV SAVED / OPEN LOGS BELOW</strong>.</p>
+    <p>Rev144 saves one WiGLE 1.6 file per session, such as <code>CERBERUS/WARD/CERBWardrive001.CSV</code>, preserving repeated valid sightings. Scanning can run without GPS, but no CSV row is saved without valid position and UTC. If no eligible rows were saved, <strong>STOPPED / NO CSV SAVED</strong> explains why. A scan alone does not mean a file was recorded.</p>
+    <p>Open <strong>LOGS / UPLOAD</strong> and review a file's rows and status. Legacy unlocated logs stay local and cannot upload. Malformed files need review on a computer; the device does not silently rewrite them.</p>
+  </section>
+
+  <section aria-labelledby="send"><h2 id="send">Send, check results and retry</h2>
+    <p>Choose <strong>UPLOAD THIS LOG</strong> or <strong>UPLOAD ALL LOCATED LOGS</strong>. Review the files, selected services and disclosure of locations and identifiers, then choose <strong>CONFIRM UPLOAD</strong>. Upload keeps the original CSV. Cancel stops further work; pending network operations may take their timeout to finish.</p>
+    <dl>
+      <dt>NOT SENT</dt><dd>No matching confirmed receipt exists for these contents and credentials.</dd>
+      <dt>IN PROGRESS / INCOMPLETE</dt><dd>Only some parts have been acknowledged. The complete file has not been confirmed.</dd>
+      <dt>UPLOADED</dt><dd>Every part has a confirmed service receipt. Processing, import and account credit are separate; check the provider account.</dd>
+      <dt>REJECTED</dt><dd>The service explicitly rejected the request. Correct its cause before manually retrying.</dd>
+      <dt>CHECK ACCOUNT</dt><dd>Delivery is uncertain, or the saved receipt needs review. Check the provider account before resending.</dd>
+    </dl>
+    <p>Reopen a log to see its saved receipts. Later uploads skip parts already acknowledged for the same contents and credentials. Rotating a key creates a new receipt identity, so check your account before uploading old captures again.</p>
+    <p>For an uncertain service, use its <strong>RETRY … UPLOAD</strong> or <strong>REVIEW RETRY</strong> action, review the scope and choose <strong>CONFIRM SERVICE RETRY</strong>. An earlier attempt may already have arrived, so this can resubmit data. Other services and acknowledged parts are not resent. There is no automatic resend or account-status reconciliation.</p>
+    <p>Deletion is a separate confirmed action and cannot be undone. It excludes temporary captures, unrelated folders, credentials and receipts.</p>
+  </section>
+  <footer>Credit to the Sentinel foundation, @valleytechsolutions, JustCallMeKoko and the ESP32 Marauder contributors. <a href="../notices.txt">Licenses and third-party notices</a> · <a href="../#release-notes">Release information</a></footer>
+</body>
+</html>

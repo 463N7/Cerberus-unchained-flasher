@@ -23,9 +23,11 @@ See [the setup guide](https://463n7.github.io/Cerberus-unchained-flasher/guides/
 
 [GPS wiring and receiver profiles](https://463n7.github.io/Cerberus-unchained-flasher/#gps-pinout)
 are on the flasher page, below the SD section. Rev144 receives NMEA on S3 GPIO1
-from the GPS module's TX output. Follow the supply/logic-level instructions for
-your exact breakout. GPIO2 transmit and GPIO46 PPS are reserved and can remain
-disconnected. LC29H reception/fix has been tested; ATGM336H has a firmware preset
+from the GPS module's TX output. The full pinout also shows GPS RX to S3 GPIO2
+and GPS PPS to GPIO46. Use 3V3 or 5V for power according to your GPS board's
+requirements; UART/PPS signals must still match the S3's logic levels. RX and
+PPS connections are optional in rev144, which receives NMEA only and does not
+send commands or use PPS timing. LC29H reception/fix has been tested; ATGM336H has a firmware preset
 but remains physically unverified.
 
 ## Credits and notices

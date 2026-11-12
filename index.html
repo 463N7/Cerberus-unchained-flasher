@@ -86,22 +86,24 @@
     </section>
     <section id="gps-pinout" class="gps-section" aria-labelledby="gps-title">
       <div class="section-heading"><div><p class="eyebrow">03 / GPS ADD-ON</p><h2 id="gps-title">Add GPS to your Cerberus.</h2></div><span class="gps-tag">REV144 · UART NMEA · RECEIVE ONLY</span></div>
-      <p class="gps-intro">Give your wardriving logs a location. Connect a serial GNSS receiver to the <strong>ESP32-S3</strong>, then choose its profile on Cerberus. Start with power, ground and one data wire.</p>
+      <p class="gps-intro">Give your wardriving logs a location. Connect a serial GNSS receiver to the <strong>ESP32-S3</strong> using the pinout below, then choose its profile on Cerberus.</p>
       <div class="gps-grid">
         <div class="gps-wiring">
-          <h3>Three connections to get started.</h3>
-          <table class="gps-table"><caption>Default wiring for a breakout that accepts a 3.3 V supply and has S3-compatible UART output</caption><thead><tr><th scope="col">GNSS breakout</th><th scope="col">Cerberus ESP32-S3</th></tr></thead><tbody>
-            <tr><th scope="row"><code>VCC / VIN</code><span>Power</span></th><td><code>3V3</code><span>Only for a breakout rated to run from 3.3 V.</span></td></tr>
+          <h3>GPS pinout at a glance.</h3>
+          <table class="gps-table"><caption>Default GPS connections. Match the supply voltage and UART/PPS signal levels to your exact GPS module or breakout.</caption><thead><tr><th scope="col">GNSS breakout</th><th scope="col">Cerberus ESP32-S3</th></tr></thead><tbody>
+            <tr><th scope="row"><code>VCC / VIN</code><span>Power</span></th><td><code>3V3 or 5V</code><span>Use 3.3 V or 5 V according to your GPS board's power requirements. Use 5 V only if its power input is rated for 5 V.</span></td></tr>
             <tr><th scope="row"><code>GND</code><span>Ground</span></th><td><code>GND</code><span>Use a common ground between both boards.</span></td></tr>
             <tr class="gps-data-row"><th scope="row"><code>TX / TXD</code><span>Receiver data out</span></th><td><code>GPIO1 · S3 RX</code><span>GPS TX → Cerberus RX. Level-shift if needed.</span></td></tr>
+            <tr><th scope="row"><code>RX / RXD</code><span>Receiver data in</span></th><td><code>GPIO2 · S3 TX</code><span>Cerberus TX → GPS RX. Optional; rev144 does not send receiver commands.</span></td></tr>
+            <tr><th scope="row"><code>PPS</code><span>Pulse-per-second output</span></th><td><code>GPIO46 · PPS input</code><span>GPS PPS → Cerberus GPIO46. Optional; reserved for future PPS timing.</span></td></tr>
           </tbody></table>
           <p class="gps-pin-note">These are <strong>GPIO labels</strong>, not connector position numbers. Find the matching pads using your Cerberus PCB labels or schematic; header layouts can differ.</p>
         </div>
         <div class="gps-setup">
           <h3>Wire it. Select it. Find a fix.</h3>
           <ol>
-            <li><strong>Power off before wiring.</strong><span>Disconnect USB and battery power. Match the receiver's supply and UART signal levels; a 3.3 V supply does not guarantee 3.3 V logic. Never feed 5 V or RS-232 signals into an S3 GPIO.</span></li>
-            <li><strong>Open Settings → GPS RECEIVER.</strong><span>Stop any active wardrive first. Choose <code>AUTO NMEA</code> or the preset below, set S3 RX to <code>GPIO 1</code>, and select <code>NOT WIRED</code> for S3 TX and PPS in this three-wire setup. Enable GPS, then tap <code>SAVE / APPLY</code>.</span></li>
+            <li><strong>Power off before wiring.</strong><span>Disconnect USB and battery power. Use 3V3 or 5V for power according to your GPS board's requirements, and match its UART/PPS signal levels separately. Never feed 5 V or RS-232 signals into an S3 GPIO.</span></li>
+            <li><strong>Open Settings → GPS RECEIVER.</strong><span>Stop any active wardrive first. Choose <code>AUTO NMEA</code> or the preset below. Match the table: S3 RX <code>GPIO 1</code>, S3 TX <code>GPIO 2</code> and PPS <code>GPIO 46</code>. If you leave GPS RX or PPS disconnected, select <code>NOT WIRED</code> for that connection. Enable GPS, then tap <code>SAVE / APPLY</code>.</span></li>
             <li><strong>Check the fix before Start.</strong><span>Attach the receiver's suitable antenna and give it a clear view of the sky. Open <code>Scan → Wardriving</code>, turn <code>GPS: ON</code>, and wait for <code>GPS DATA &gt; FIX + UTC / WIGLE CSV</code>. Valid location and UTC are required to save geotagged rows.</span></li>
           </ol>
         </div>
@@ -111,7 +113,7 @@
         <article><span class="gps-receiver-status gps-preset-only">PRESET AVAILABLE · HARDWARE UNVERIFIED</span><h3>ATGM336H</h3><p class="gps-baud">9600 baud</p><p>Choose <code>ATGM336H</code> for a receiver already outputting NMEA at 9600. The preset is implemented; this module has not been physically verified with this release.</p></article>
         <article><span class="gps-receiver-status gps-preset-only">CHECK YOUR RECEIVER</span><h3>Other UART NMEA receivers</h3><p class="gps-baud">AUTO or MANUAL NMEA</p><p>Use a voltage-compatible UART output with checksum-valid NMEA RMC and GGA sentences, <code>8N1</code>, and no flow control. USB-only, I²C-only and binary-only output will not work on these pins.</p></article>
       </div>
-      <details class="gps-details"><summary>GPIO2 / GPIO46: what about RX and PPS?</summary><p>The firmware's default assignments reserve <strong>S3 TX GPIO2 → GPS RX</strong> and <strong>GPS PPS → GPIO46</strong>. Rev144 does not send receiver commands or use PPS timing, so leave both receiver pins disconnected for the setup above. GPIO46 is input-only and cannot serve as S3 TX.</p></details>
+      <details class="gps-details"><summary>RX and PPS support in rev144</summary><p>The table shows the firmware's default assignments: <strong>S3 TX GPIO2 → GPS RX</strong> and <strong>GPS PPS → GPIO46</strong>. Rev144 receives NMEA only; it does not send receiver commands or use PPS timing. These two connections are optional for GPS reception. GPIO46 is input-only and cannot serve as S3 TX.</p></details>
       <details class="gps-details"><summary>Receiver voltage, baud and troubleshooting</summary><p><strong>Power and logic are separate.</strong> Use the voltage specified for your exact breakout and a suitable UART level shifter whenever signal levels do not match. Bare LC29H modules use a 3.3 V nominal supply but a 2.8 V UART1; their 1.8 V UART2 is a different interface. Use the breakout's NMEA UART output. A board marked “5 V VIN” may have a regulator without UART level conversion.</p><p><strong>AUTO listens; it does not reprogram the module.</strong> It tries 115200, 9600, 38400, 57600, 19200, 4800, 230400, 460800 and 921600 baud. MANUAL NMEA selects one of those rates. Make sure the receiver is already sending RMC/GGA at the chosen rate.</p><p><strong>NO RECENT NMEA:</strong> check power, ground, GPS TX → S3 RX, signal levels, selected GPIO, baud and NMEA output. <strong>NMEA / NO FIX:</strong> data is arriving; check antenna placement and allow time outdoors. <strong>FIX / UTC UNVERIFIED:</strong> check that the receiver emits valid RMC date/time. The firmware cannot create missing GPS data.</p><p class="gps-sources">Electrical references: <a class="text-link" href="https://www.quectel.com/content/uploads/2022/06/Quectel_LC29H_Series_Hardware_Design_V1.2.pdf" target="_blank" rel="noopener noreferrer">Quectel LC29H hardware guide ↗</a> · <a class="text-link" href="https://documentation.espressif.com/esp32-s3_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">ESP32-S3 electrical limits ↗</a></p></details>
     </section>
     <section id="release-notes" class="release-section" aria-labelledby="release-title">

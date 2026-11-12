@@ -19,6 +19,15 @@ The existing rev136 pack remains compatible with rev144. The upload-profile
 example is empty, with every service disabled. Keep completed profiles private.
 See [the setup guide](https://463n7.github.io/Cerberus-unchained-flasher/guides/wardrive-uploads.html).
 
+## Add GPS
+
+[GPS wiring and receiver profiles](https://463n7.github.io/Cerberus-unchained-flasher/#gps-pinout)
+are on the flasher page, below the SD section. Rev144 receives NMEA on S3 GPIO1
+from the GPS module's TX output. Follow the supply/logic-level instructions for
+your exact breakout. GPIO2 transmit and GPIO46 PPS are reserved and can remain
+disconnected. LC29H reception/fix has been tested; ATGM336H has a firmware preset
+but remains physically unverified.
+
 ## Credits and notices
 
 Credit to the Sentinel foundation, @valleytechsolutions, JustCallMeKoko and

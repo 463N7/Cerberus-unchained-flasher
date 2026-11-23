@@ -1,7 +1,7 @@
 # Cerberus Unchained web flasher
 
 [Open the flasher](https://463n7.github.io/Cerberus-unchained-flasher/) ·
-[rev144 experimental release](https://github.com/463N7/Cerberus-unchained-flasher/releases/tag/v0.1.0-dev.rev144)
+[rev149 experimental release](https://github.com/463N7/Cerberus-unchained-flasher/releases/tag/v0.1.0-dev.rev149)
 
 This repository contains only the built public installer, matched firmware
 images, SD downloads, user guides and redistribution notices. Firmware source,
@@ -9,24 +9,24 @@ development history, pull requests, tests and board diagnostics are not included
 
 Use desktop Chrome or Edge with a production S3/C5 Cerberus and a USB data
 cable. The installer checks all nine image hashes before any device write.
-The selected pair is rev144 / C5 75, protocol 2. This remains experimental;
+The selected pair is rev149 / C5 75, protocol 2. This remains experimental;
 see the release notes for validation and service limits.
 
 ## SD card and manual uploads
 
 The flasher's SD section provides the asset ZIP, checksum and copy instructions.
-The existing rev136 pack remains compatible with rev144. The upload-profile
+The rev149 pack adds sample TXT/EPUB books and AVI video; merge it with existing assets. The upload-profile
 example is empty, with every service disabled. Keep completed profiles private.
 See [the setup guide](https://463n7.github.io/Cerberus-unchained-flasher/guides/wardrive-uploads.html).
 
 ## Add GPS
 
 [GPS wiring and receiver profiles](https://463n7.github.io/Cerberus-unchained-flasher/#gps-pinout)
-are on the flasher page, below the SD section. Rev144 receives NMEA on S3 GPIO1
+are on the flasher page, below the SD section. Rev149 receives NMEA on S3 GPIO1
 from the GPS module's TX output. The full pinout also shows GPS RX to S3 GPIO2
 and GPS PPS to GPIO46. Use 3V3 or 5V for power according to your GPS board's
 requirements; UART/PPS signals must still match the S3's logic levels. RX and
-PPS connections are optional in rev144, which receives NMEA only and does not
+PPS connections are optional in rev149, which receives NMEA only and does not
 send commands or use PPS timing. LC29H reception/fix has been tested; ATGM336H has a firmware preset
 but remains physically unverified.
 

@@ -1,0 +1,5 @@
+# Static releases are checksummed downloads; preserve their exact bytes.
+* -text
+firmware/** -whitespace
+downloads/** -whitespace
+notices.txt -whitespace

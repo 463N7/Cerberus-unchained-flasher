@@ -19,6 +19,17 @@ The rev149 pack adds sample TXT/EPUB books and AVI video; merge it with existing
 example is empty, with every service disabled. Keep completed profiles private.
 See [the setup guide](https://463n7.github.io/Cerberus-unchained-flasher/guides/wardrive-uploads.html).
 
+## Extra C5 modules
+
+[Flash WROOM expansion modules over USB-to-UART](https://463n7.github.io/Cerberus-unchained-flasher/#expansion-flasher)
+using the new separate installer. It programs one ESP32-C5-WROOM-1 / WROOM-1U
+at a time with a three-file expansion image, then verifies the written bytes.
+The page includes TX/RX wiring, regulated 3.3 V power, BOOT/RESET steps,
+runtime SPI assignments, a binary download and a local report for each module.
+This profile requires at least 4 MB flash and differs from the onboard C5 image.
+Build and mocked installer checks pass; physical expansion-board acceptance
+remains pending. The main rev149 firmware package is unchanged.
+
 ## Add GPS
 
 [GPS wiring and receiver profiles](https://463n7.github.io/Cerberus-unchained-flasher/#gps-pinout)

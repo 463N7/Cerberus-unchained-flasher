@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "product": "Cerberus Unchained Expansion",
+  "version": "0.1.0-dev.rev149",
+  "releaseId": "cerberus-expansion-0.1.0-dev.rev149",
+  "sourceSha256": "d3260e7031553706e671d24b763aee33edafc2f0d659043074359b498daaa56f",
+  "builtUtc": "2026-11-23T19:39:42.955040+00:00",
+  "protocol": 3,
+  "firmware": 1,
+  "hardwareValidation": "not performed; experimental",
+  "download": "cerberus-c5-expansion-wroom-0.1.0-dev.rev149.zip",
+  "targets": {
+    "wroom": {
+      "chip": "esp32c5",
+      "flashSizeBytes": 4194304,
+      "flashMode": "dio",
+      "flashFrequency": "80m",
+      "partitions": [
+        {
+          "name": "nvs",
+          "type": 1,
+          "subtype": 2,
+          "offset": 36864,
+          "size": 24576
+        },
+        {
+          "name": "phy_init",
+          "type": 1,
+          "subtype": 1,
+          "offset": 61440,
+          "size": 4096
+        },
+        {
+          "name": "factory",
+          "type": 0,
+          "subtype": 0,
+          "offset": 65536,
+          "size": 1048576
+        }
+      ],
+      "parts": [
+        {
+          "role": "bootloader",
+          "path": "wroom/bootloader.bin",
+          "offset": 8192,
+          "size": 22192,
+          "sha256": "b81cde7b2261f6fb119ad15c6bd4382f0b5c45668a164577e3f48094a03efe73",
+          "md5": "6bc55ced00e8c1044e21dc17df1373a8"
+        },
+        {
+          "role": "partition-table",
+          "path": "wroom/partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+          "md5": "5d61d196adc3dba01928f264eb169be7"
+        },
+        {
+          "role": "app",
+          "path": "wroom/app.bin",
+          "offset": 65536,
+          "size": 926400,
+          "sha256": "7974ac3196e2ebfb95bb16effe2cc72a08d29ae31d689df5cb41e8dce3442d9f",
+          "md5": "8ac5829918d91ee392feae03f21adb42"
+        }
+      ],
+      "eraseRegions": [
+        {
+          "offset": 0,
+          "size": 4096
+        }
+      ]
+    }
+  }
+}
